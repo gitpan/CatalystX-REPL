@@ -1,0 +1,12 @@
+Changes
+LICENSE
+MANIFEST
+META.yml
+Makefile.PL
+README
+dist.ini
+lib/CatalystX/REPL.pm
+t/basic.t
+t/lib/TestApp.pm
+t/lib/TestApp/Controller/Foo.pm
+t/request.pl
