@@ -7,9 +7,9 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
   DISTNAME  => 'CatalystX-REPL',
   NAME      => 'CatalystX::REPL',
-  AUTHOR    => 'Tomas\ Doram\ \<bobtfish\@bobtfish\.net\>\,\ Florian\ Ragwitz\ \<rafl\@debian\.org\>',
+  AUTHOR    => 'Tomas\ Doran\ \<bobtfish\@bobtfish\.net\>\,\ Florian\ Ragwitz\ \<rafl\@debian\.org\>\,\ Ash\ Berlin\ \<ash\@cpan\.org\>',
   ABSTRACT  => 'read-eval-print-loop for debugging your Catalyst application',
-  VERSION   => '0.01',
+  VERSION   => '0.02',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

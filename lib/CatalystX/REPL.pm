@@ -1,5 +1,5 @@
 package CatalystX::REPL;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 # ABSTRACT: read-eval-print-loop for debugging your Catalyst application
 
@@ -25,7 +25,7 @@ CatalystX::REPL - read-eval-print-loop for debugging your Catalyst application
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -33,6 +33,7 @@ version 0.01
 
     use Moose;
 
+    # Requires Catalyst 5.8 series
     extends 'Catalyst';
     with 'CatalystX::REPL';
 
@@ -42,13 +43,40 @@ version 0.01
 
 =head1 DESCRIPTION
 
-This role automatically sets up Carp::REPL after starting your application, if
-the C<CATALYST_REPL> or C<MYAPP_REPL> environment variabeles are set.
+Using L<Carp::REPL|Carp::REPL> with a Catalyst application is hard. That's
+because of all the internal exceptions that are being thrown and caught by
+Catalyst during application startup. You'd have to manually skip over all of
+those.
+
+This role works around that by automatically setting up Carp::REPL after
+starting your application, if the C<CATALYST_REPL> or C<MYAPP_REPL> environment
+variables are set:
+
+ MYAPP_REPL=1 ./script/myapp_server.pl
+ # Hit an action
+ ...
+
+ 42 at lib/MyApp/Controller/Foo.pm line 8.
+
+ # instead of exiting, you get a REPL!
+ Trace begun at lib/MyApp/Controller/Foo.pm line 8
+ MyApp::Controller::Foo::bar('MyApp::Controller::Foo=HASH(0xc9fe20)', 'MyApp=HASH(0xcea6a4)') called at ...
+ ... # Many more lines of stack trace
+
+ $ $c
+ MyApp=HASH(0xcea6ec)
+ $ $c->req->uri          
+ http://localhost/foo/bar
+ $ 
+
+Carp::REPL uses L<Devel::REPL> for the shell, so direct any questions how how
+to use or customize the repl at that module.
 
 =head1 AUTHORS
 
-  Tomas Doram <bobtfish@bobtfish.net>
+  Tomas Doran <bobtfish@bobtfish.net>
   Florian Ragwitz <rafl@debian.org>
+  Ash Berlin <ash@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -56,4 +84,10 @@ This software is copyright (c) 2009 by Florian Ragwitz.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.
+
+=head1 SEE ALSO
+
+L<Carp::REPL>
+
+L<Devel::REPL>
 

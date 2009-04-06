@@ -1,8 +1,9 @@
 --- 
 abstract: read-eval-print-loop for debugging your Catalyst application
 author: 
-  - Tomas Doram <bobtfish@bobtfish.net>
+  - Tomas Doran <bobtfish@bobtfish.net>
   - Florian Ragwitz <rafl@debian.org>
+  - Ash Berlin <ash@cpan.org>
 generated_by: Dist::Zilla::Plugin::MetaYaml version 1.004
 license: perl
 name: CatalystX-REPL
@@ -10,4 +11,4 @@ requires:
   Carp::REPL: 0
   Catalyst: 5.800006
   namespace::clean: 0
-version: 0.01
+version: 0.02
