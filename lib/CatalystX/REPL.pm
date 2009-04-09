@@ -1,5 +1,5 @@
 package CatalystX::REPL;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 # ABSTRACT: read-eval-print-loop for debugging your Catalyst application
 
@@ -12,8 +12,9 @@ use namespace::clean -except => 'meta';
 
 after setup_finalize => sub {
     my ($self) = @_;
-    $SIG{__DIE__} = \&Carp::REPL::repl
-        if Catalyst::Utils::env_value($self, 'repl');
+    if (my $repl_options = Catalyst::Utils::env_value($self, 'repl')) {
+        Carp::REPL->import(split q{,}, $repl_options);
+    }
 };
 
 1;
@@ -25,7 +26,7 @@ CatalystX::REPL - read-eval-print-loop for debugging your Catalyst application
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 
@@ -65,9 +66,14 @@ variables are set:
 
  $ $c
  MyApp=HASH(0xcea6ec)
- $ $c->req->uri          
+ $ $c->req->uri
  http://localhost/foo/bar
- $ 
+ $
+
+Options like C<warn> or C<nodie> can be passed to Carp::REPL by putting them,
+seperated by commas, into the environment variable:
+
+ MYAPP_REPL=warn,nodie ./script/myapp_server.pl
 
 Carp::REPL uses L<Devel::REPL> for the shell, so direct any questions how how
 to use or customize the repl at that module.

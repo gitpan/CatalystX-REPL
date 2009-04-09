@@ -11,4 +11,4 @@ requires:
   Carp::REPL: 0
   Catalyst: 5.800006
   namespace::clean: 0
-version: 0.02
+version: 0.03
