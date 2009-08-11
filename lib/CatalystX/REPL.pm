@@ -1,5 +1,5 @@
 package CatalystX::REPL;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 # ABSTRACT: read-eval-print-loop for debugging your Catalyst application
 
@@ -7,10 +7,21 @@ use Moose::Role;
 use Carp::REPL ();
 use Catalyst::Utils;
 
-use namespace::clean -except => 'meta';
+use namespace::autoclean;
 
 
-after setup_finalize => sub {
+# Normally we'd hook into setup_finalize, but unfortunately for us Class::MOP
+# localizes $SIG{__DIE__}, which Carp::REPL relies on, during load_class. That
+# way the die handler will only be set up between between finishing setup and
+# until after the run time of MyApp.pm ends, when MyApp is loaded with
+# load_class, which it often is, for example in Catalyst::Test. Because of that
+# we hook in at the start of each request and install our handler. This isn't
+# too bad. After all, we're a debugging only tool. We could play some tricks to
+# do this only once, before the first request and avoid reinstalling the
+# handler on every subsequent request, but given we're a role, and we don't
+# have a MyApp instance to store attributes in, we don't even try.
+
+before prepare => sub {
     my ($self) = @_;
     if (my $repl_options = Catalyst::Utils::env_value($self, 'repl')) {
         Carp::REPL->import(split q{,}, $repl_options);
@@ -20,13 +31,16 @@ after setup_finalize => sub {
 1;
 
 __END__
+
+=pod
+
 =head1 NAME
 
 CatalystX::REPL - read-eval-print-loop for debugging your Catalyst application
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
@@ -78,6 +92,14 @@ seperated by commas, into the environment variable:
 Carp::REPL uses L<Devel::REPL> for the shell, so direct any questions how how
 to use or customize the repl at that module.
 
+=head1 SEE ALSO
+
+L<Carp::REPL>
+
+L<Devel::REPL>
+
+
+
 =head1 AUTHORS
 
   Tomas Doran <bobtfish@bobtfish.net>
@@ -89,11 +111,8 @@ to use or customize the repl at that module.
 This software is copyright (c) 2009 by Florian Ragwitz.
 
 This is free software; you can redistribute it and/or modify it under
-the same terms as perl itself.
+the same terms as the Perl 5 programming language system itself.
 
-=head1 SEE ALSO
+=cut 
 
-L<Carp::REPL>
-
-L<Devel::REPL>
 

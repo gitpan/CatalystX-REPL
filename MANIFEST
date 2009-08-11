@@ -9,4 +9,6 @@ lib/CatalystX/REPL.pm
 t/basic.t
 t/lib/TestApp.pm
 t/lib/TestApp/Controller/Foo.pm
+t/release-pod-coverage.t
+t/release-pod-syntax.t
 t/request.pl
