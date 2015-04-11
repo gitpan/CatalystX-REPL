@@ -14,7 +14,7 @@ WriteMakefile(
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {
     "namespace::autoclean" => '0',
-    "Catalyst" => '5.800006',
+    "Catalyst" => '5.80006',
     "Carp::REPL" => '0',
   },
 );
